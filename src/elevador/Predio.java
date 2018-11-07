@@ -1,5 +1,6 @@
 package elevador;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Predio
@@ -8,9 +9,18 @@ public class Predio
 	private String endereco;
 	private String responsavel;
 	// predios podem ter mais elevadores.
-	private List<Elevador> elevadores;
+	private List<Elevador> elevadores = new ArrayList<Elevador>();
 	private List<Andar> andares;
+	private Integer numeroAndares;
 	
+	public Integer getNumeroAndares() {
+		return numeroAndares;
+	}
+
+	public void setNumeroAndares(int numeroAndares) {
+		this.numeroAndares = numeroAndares;
+	}
+
 	public String getNome()
 	{
 		return nome;
@@ -55,9 +65,26 @@ public class Predio
 	{
 		return andares;
 	}
-	
-	public void setAndares(List<Andar> andares)
+
+	public void setAndaresOneByOne()
 	{
-		this.andares = andares;
+		if (this.numeroAndares != null)
+		{	
+			this.andares = new ArrayList<Andar>();
+			for (int x = 0; x < this.numeroAndares; x++)
+			{
+				Andar andar = new Andar();
+				andar.setNumero(x);
+				this.getAndares().add(andar);
+			}
+		}
 	}
+
+	@Override
+	public String toString() {
+		return "Predio [nome=" + nome + ", endereco=" + endereco + ", responsavel=" + responsavel + ", elevadores="
+				+ elevadores + ", andares=" + andares + ", numeroAndares=" + numeroAndares + "]";
+	}
+	
+	
 }
