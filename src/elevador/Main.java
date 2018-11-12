@@ -3,7 +3,9 @@ package elevador;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-/*
+/**
+ * @author Queen forever...
+   
     Sistema de Controle de Elevador
 
 	Fazer um sistema de controle de elevador de um prédio.
@@ -18,12 +20,14 @@ import java.util.concurrent.ThreadLocalRandom;
 	devem descer no térreo.
  */
 
+
 public class Main
 {
 	private Predio predio;
 	private Sensor sensor;
 	private Elevador elevador;
 	private Scanner scanner;
+	
 	// criar um predio
 	public void registrarPredio()
 	{
@@ -74,42 +78,67 @@ public class Main
 		
 		int andarCorrente = 1;
 		int numeroPessoas = 0;
+		int pesoCorrente = 0;
+		
 		while (true)
 		{	
 			// ta que andar?
 			System.out.println("O Elevador está no andar: " + main.getPredio().getElevadores().get(0).getSensor().getAndarCorrente());
 			// tem quantas pessoas?
 			System.out.println("Número de pessoas dentro do elevador: " +main.getPredio().getElevadores().get(0).getSensor().getNumeroPessoas());
-			// gerar numero de 0 (inclusive) o numero de entrada
-			andarCorrente = ThreadLocalRandom.current().nextInt(main.getPredio().getNumeroAndares());
-			// abrir a porta do elevador para as pesoas
-			numeroPessoas = ThreadLocalRandom.current().nextInt(50);
-			// ver se a capacidade de pessoas dentro aceita mais
-			if (numeroPessoas * 70 < main.getPredio().getElevadores().get(0).getCapacidade() )
+			// qual o peso atual gerado pelo numero de pessoas dentro do elevador? 
+			System.out.println("Peso atual gerado pelo número de pessoas dentro do elevador: " +main.getPredio().getElevadores().get(0).getSensor().getPesoCorrente());
+			
+			// descer pessoas
+			if (numeroPessoas > 0)
 			{
+				// gerar um número de pessoas que sairam do elevador
+				int numeroPessoasSaindo =  ThreadLocalRandom.current().nextInt(numeroPessoas);
+				// faz a substração com o número corrente de pessoas
+				numeroPessoas -= numeroPessoasSaindo;
 				main.getPredio().getElevadores().get(0).getSensor().setNumeroPessoas(numeroPessoas);
+			}
+			
+			// abrir a porta do elevador para as pesoas 0 a 15 pessoas
+			numeroPessoas += ThreadLocalRandom.current().nextInt(15);
+			
+			// peso corrente
+			pesoCorrente = numeroPessoas * 70;
+			
+			// ver se a capacidade de pessoas dentro aceita mais supondo que todos pesam uma media de 70 kilos
+			if (pesoCorrente < main.getPredio().getElevadores().get(0).getCapacidade() )
+			{
+				System.out.println("Capacidade não foi sobrecarregada!");
+			
+				// indo para o proximo andar 
+				andarCorrente = ThreadLocalRandom.current().nextInt(main.getPredio().getNumeroAndares());
+				
+				// descer todas as pessoas se o andar corrente for 0
+				if (andarCorrente == 0)
+				{
+					numeroPessoas = 0;
+					pesoCorrente = 0;
+					main.getPredio().getElevadores().get(0).getSensor().setPesoCorrente(0);
+				}
+				
+				// andar corrente detectado pelo sensor e atualizado
+				main.getPredio().getElevadores().get(0).getSensor().setAndarCorrente(andarCorrente);
+				
+				// numero de pesoas detectado pelo sensor
+				main.getPredio().getElevadores().get(0).getSensor().setNumeroPessoas(numeroPessoas);
+				main.getPredio().getElevadores().get(0).getSensor().setPesoCorrente(pesoCorrente);
+				
+				Thread.sleep(ThreadLocalRandom.current().nextInt(5000));
 				continue;
 			}
 			else 
 			{
-				
+				System.out.println("Capacidade foi sobrecarregada!");
+				continue;
 			}
-			
-			// gerar um número de pessoas que sairam do elevador
-			int numeroPessoasSaindo =  ThreadLocalRandom.current().nextInt(numeroPessoas);
-			// faz a substração com o número corrente de pessoas
-			numeroPessoas -= numeroPessoasSaindo;
-			
-			main.getPredio().getElevadores().get(0).getSensor().setNumeroPessoas(numeroPessoas);
-			
-			Thread.sleep(ThreadLocalRandom.current().nextInt(5000));
-			
-			
 		}
-		
 	}
 	
-
 	public Predio getPredio() {
 		return predio;
 	}
