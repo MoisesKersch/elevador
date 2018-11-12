@@ -79,12 +79,4 @@ public class Predio
 			}
 		}
 	}
-
-	@Override
-	public String toString() {
-		return "Predio [nome=" + nome + ", endereco=" + endereco + ", responsavel=" + responsavel + ", elevadores="
-				+ elevadores + ", andares=" + andares + ", numeroAndares=" + numeroAndares + "]";
-	}
-	
-	
 }

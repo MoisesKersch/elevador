@@ -18,6 +18,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 	No final da execução, todas as pessoas que ainda estiverem no elevador
 	devem descer no térreo.
+	
+	Tudo pode ser registrado, o predio, o sensor, e os andares.
  */
 
 
